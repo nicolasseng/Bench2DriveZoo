@@ -43,6 +43,7 @@ class UniadAgent(autonomous_agent.AutonomousAgent):
         if IS_BENCH2DRIVE:
             self.save_name = path_to_conf_file.split('+')[-1]
         else:
+            now = datetime.datetime.now()
             self.save_name = '_'.join(map(lambda x: '%02d' % x, (now.month, now.day, now.hour, now.minute, now.second)))
         self.step = -1
         self.wall_start = time.time()
@@ -258,7 +259,7 @@ class UniadAgent(autonomous_agent.AutonomousAgent):
                 
             ]
         
-        if IS_BENCH2DRIVE:
+        if SAVE_PATH is not None:
             sensors += [
                     {	
                         'type': 'sensor.camera.rgb',
@@ -278,7 +279,7 @@ class UniadAgent(autonomous_agent.AutonomousAgent):
             _, img = cv2.imencode('.jpg', img, encode_param)
             img = cv2.imdecode(img, cv2.IMREAD_COLOR)
             imgs[cam] = img
-        bev = cv2.cvtColor(input_data['bev'][1][:, :, :3], cv2.COLOR_BGR2RGB)
+        bev = cv2.cvtColor(input_data['bev'][1][:, :, :3], cv2.COLOR_BGR2RGB) if 'bev' in input_data else None
         gps = input_data['GPS'][1][:2]
         speed = input_data['SPEED'][1]['speed']
         compass = input_data['IMU'][1][-1]

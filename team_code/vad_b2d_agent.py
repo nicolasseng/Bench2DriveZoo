@@ -47,6 +47,7 @@ class VadAgent(autonomous_agent.AutonomousAgent):
         if IS_BENCH2DRIVE:
             self.save_name = path_to_conf_file.split('+')[-1]
         else:
+            now = datetime.datetime.now()
             self.save_name = '_'.join(map(lambda x: '%02d' % x, (now.month, now.day, now.hour, now.minute, now.second)))
         self.step = -1
         self.wall_start = time.time()
